@@ -1,9 +1,11 @@
 define([
+        './defaultValue',
         './defined',
         './DeveloperError',
         './Resource',
         'require'
     ], function(
+        defaultValue,
         defined,
         DeveloperError,
         Resource,
@@ -73,8 +75,9 @@ define([
      *
      * @private
      */
-    function buildModuleUrl(moduleID) {
-        if (typeof document === 'undefined') {
+    function buildModuleUrl(moduleID, onWorker) {
+        onWorker = defaultValue(onWorker, false);
+        if (typeof document === 'undefined' && !onWorker) {
             //document is undefined in node
             return moduleID;
         }
@@ -87,11 +90,14 @@ define([
             }
         }
 
+        var url = implementation(moduleID);
+        if (onWorker) {
+            return url;
+        }
+
         if (!defined(a)) {
             a = document.createElement('a');
         }
-
-        var url = implementation(moduleID);
 
         a.href = url;
         a.href = a.href; // IE only absolutizes href on get, not set
