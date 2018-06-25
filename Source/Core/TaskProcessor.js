@@ -142,7 +142,8 @@ define([
 
         var bootstrapMessage = {
             loaderConfig : {},
-            workerModule : TaskProcessor._workerModulePrefix + processor._workerName
+            workerModule : TaskProcessor._workerModulePrefix + processor._workerName,
+            cesiumBaseUrl : buildModuleUrl.getCesiumBaseUrl().url
         };
 
         if (defined(TaskProcessor._loaderConfig)) {

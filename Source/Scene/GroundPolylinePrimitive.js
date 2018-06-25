@@ -382,7 +382,7 @@ define([
             return initPromise;
         }
 
-        GroundPolylinePrimitive._initPromise = ApproximateTerrainHeights.initialize(true)
+        GroundPolylinePrimitive._initPromise = ApproximateTerrainHeights.initialize()
             .then(function() {
                 GroundPolylinePrimitive._initialized = true;
             });

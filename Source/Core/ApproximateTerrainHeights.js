@@ -49,17 +49,19 @@ define([
      * Initializes the minimum and maximum terrain heights
      * @return {Promise}
      */
-    ApproximateTerrainHeights.initialize = function(worker) {
+    ApproximateTerrainHeights.initialize = function() {
         var initPromise = ApproximateTerrainHeights._initPromise;
         if (defined(initPromise)) {
             return initPromise;
         }
 
-        ApproximateTerrainHeights._initPromise = Resource.fetchJson(buildModuleUrl('Assets/approximateTerrainHeights.json', worker)).then(function(json) {
-            ApproximateTerrainHeights._terrainHeights = json;
-        });
+        initPromise = Resource.fetchJson(buildModuleUrl('Assets/approximateTerrainHeights.json'))
+            .then(function(json) {
+                ApproximateTerrainHeights._terrainHeights = json;
+            });
+        ApproximateTerrainHeights._initPromise = initPromise;
 
-        return ApproximateTerrainHeights._initPromise;
+        return initPromise;
     };
 
     /**

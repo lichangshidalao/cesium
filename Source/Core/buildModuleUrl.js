@@ -1,14 +1,14 @@
 define([
-        './defaultValue',
         './defined',
         './DeveloperError',
         './Resource',
+        '../ThirdParty/Uri',
         'require'
     ], function(
-        defaultValue,
         defined,
         DeveloperError,
         Resource,
+        Uri,
         require) {
     'use strict';
     /*global CESIUM_BASE_URL*/
@@ -75,12 +75,7 @@ define([
      *
      * @private
      */
-    function buildModuleUrl(moduleID, onWorker) {
-        onWorker = defaultValue(onWorker, false);
-        if (typeof document === 'undefined' && !onWorker) {
-            //document is undefined in node
-            return moduleID;
-        }
+    function buildModuleUrl(moduleID) {
         if (!defined(implementation)) {
             //select implementation
             if (defined(define.amd) && !define.amd.toUrlUndefined && defined(require.toUrl)) {
@@ -91,14 +86,14 @@ define([
         }
 
         var url = implementation(moduleID);
-        if (onWorker) {
+        var uri = new Uri(url);
+        if (uri.isAbsolute()) {
             return url;
         }
 
         if (!defined(a)) {
             a = document.createElement('a');
         }
-
         a.href = url;
         a.href = a.href; // IE only absolutizes href on get, not set
 
@@ -111,6 +106,7 @@ define([
     buildModuleUrl._clearBaseResource = function() {
         baseResource = undefined;
     };
+    buildModuleUrl.getCesiumBaseUrl = getCesiumBaseUrl;
 
     /**
      * Sets the base URL for resolving modules.
