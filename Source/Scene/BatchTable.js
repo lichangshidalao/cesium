@@ -113,7 +113,7 @@ define([
         // will be packed into a single texel leaving 3 texels unused. 4 texels are reserved for each float attribute
         // regardless of how many components it has.
         var pixelDatatype = getDatatype(attributes);
-        var textureFloatSupported = context.floatingPointTexture;
+        var textureFloatSupported = false;//context.floatingPointTexture;
         var packFloats = pixelDatatype === PixelDatatype.FLOAT && !textureFloatSupported;
         var offsets = createOffsets(attributes, packFloats);
 
